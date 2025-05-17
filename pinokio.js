@@ -1,3 +1,5 @@
+const { app } = require("pinokio");
+
 module.exports = app({
   name: "LTX-Video (Web UI)",
   description: "Run Lightricks' image-to-video diffusion model locally with Metal acceleration and a web interface.",
@@ -6,30 +8,18 @@ module.exports = app({
   async onInstall() {
     await this.clone();
 
-    // Create virtual environment
     await term.install([
       "python3 -m venv venv",
-      "source venv/bin/activate && pip install --upgrade pip"
-    ]);
-
-    // Install PyTorch with MPS (Metal) support
-    await term.install([
-      "source venv/bin/activate && pip install torch torchvision torchaudio"
-    ]);
-
-    // Install required Python libraries
-    await term.install([
+      "source venv/bin/activate && pip install --upgrade pip",
+      "source venv/bin/activate && pip install torch torchvision torchaudio",
       "source venv/bin/activate && pip install diffusers transformers accelerate safetensors opencv-python scipy gradio"
     ]);
 
-    // Install ffmpeg via Homebrew
     await term.exec("brew install ffmpeg || true");
 
-    // Download model checkpoint
     await fs.mkdir("models");
     await term.exec("curl -L -o models/model.safetensors https://huggingface.co/lightricks/LTX-Video/resolve/main/model.safetensors");
 
-    // Copy web_ui.py
     await fs.writeFile("web_ui.py", `
 import gradio as gr
 import subprocess
@@ -38,12 +28,9 @@ import os
 def generate_video(image):
     image_path = "input_image.jpg"
     video_path = "output_video.mp4"
-
     image.save(image_path)
-
     command = f"source venv/bin/activate && python inference.py --input_image {image_path} --output_video {video_path}"
     result = subprocess.run(command, shell=True, capture_output=True)
-
     if result.returncode != 0:
         return f"Error: {result.stderr.decode()}", None
     return "Success", video_path
