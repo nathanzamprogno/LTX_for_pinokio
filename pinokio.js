@@ -1,8 +1,6 @@
-const { app } = require("pinokio");
-
 module.exports = app({
   name: "LTX-Video (Web UI)",
-  description: "Run Lightricks' image-to-video diffusion model locally with Metal acceleration and a web interface.",
+  description: "Generate a looping video from a still image using Lightricks' diffusion model.",
   repo: "https://github.com/Lightricks/LTX-Video",
 
   async onInstall() {
