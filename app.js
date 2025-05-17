@@ -1,6 +1,4 @@
-// LTX-Video with Metal Acceleration and Web UI
-
-app({
+export default app({
   name: "LTX-Video (Web UI)",
   description: "Run Lightricks' image-to-video diffusion model locally with Metal acceleration and a web interface.",
   repo: "https://github.com/Lightricks/LTX-Video",
@@ -14,7 +12,7 @@ app({
       "source venv/bin/activate && pip install --upgrade pip"
     ]);
 
-    // Install PyTorch with MPS (Metal Performance Shaders) support
+    // Install PyTorch with MPS (Metal) support
     await term.install([
       "source venv/bin/activate && pip install torch torchvision torchaudio"
     ]);
@@ -24,7 +22,7 @@ app({
       "source venv/bin/activate && pip install diffusers transformers accelerate safetensors opencv-python scipy gradio"
     ]);
 
-    // Install ffmpeg via Homebrew (ignore if already installed)
+    // Install ffmpeg via Homebrew
     await term.exec("brew install ffmpeg || true");
 
     // Download model checkpoint
