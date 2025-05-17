@@ -1,5 +1,3 @@
-const { app } = require("pinokio");
-
 module.exports = app({
   name: "LTX-Video (Web UI)",
   description: "Run Lightricks' image-to-video diffusion model locally with Metal acceleration and a web interface.",
